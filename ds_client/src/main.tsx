@@ -52,8 +52,8 @@ function Main(): JSX.Element {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Layout />}>
-        <Route index element={<AdminLoginForm />} />
-        <Route path="home" element={<Home />} />
+        <Route path="/" element={<AdminLoginForm />} />
+        <Route path="/home" element={<Home />} />
       </Route>
     )
   );
