@@ -106,11 +106,11 @@ const AdminLoginForm: React.FC<AdminLoginFormProps> = ({ onLogin, user }) => {
         style={{
           marginBottom: "10px",
           marginTop: "10px",
-          width: "100%",
+          width: "80%",
         }}
       >
         <div className="bg-gray-500 py-3">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-2">
+          <h2 className="text-3xl font-bold text-center text-gray-800 mb-2 ">
             Please Login to continue...
             <hr
               className="border-t-2 border-red-700 mb-1 py-1"
@@ -132,7 +132,7 @@ const AdminLoginForm: React.FC<AdminLoginFormProps> = ({ onLogin, user }) => {
             style={{ margin: "20px", width: "100%", height: "auto" }}
           >
             <div className="form-group flex items-center mb-4">
-              <label htmlFor="username" className="form-label mr-4 text-left">
+              <label htmlFor="username" className="form-label mr-4 text-left ">
                 Username:
               </label>
               <input

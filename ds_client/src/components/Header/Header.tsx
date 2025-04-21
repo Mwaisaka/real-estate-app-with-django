@@ -1,9 +1,3 @@
-// import React from "react";
-
-// export default function Header(){
-    
-// }
-
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import SoftDev from "../Images/SoftDev.jpg";
