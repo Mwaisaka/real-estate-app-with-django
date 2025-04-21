@@ -109,7 +109,7 @@ const AdminLoginForm: React.FC<AdminLoginFormProps> = ({ onLogin, user }) => {
           width: "100%",
         }}
       >
-        <div className="bg-gray-100 py-3">
+        <div className="bg-gray-500 py-3">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-2">
             Please Login to continue...
             <hr
