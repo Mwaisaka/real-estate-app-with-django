@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import Clock from "../Clock/Clock";
+import Clock from "../Clock/Clock";
 
 import SoftDev from "../Images/SoftDev.jpg";
 
@@ -21,7 +21,7 @@ export default function Footer() {
           </div>
           <div className="flex justify-center items-center h-[10%]  mt-10 ml-6">
             <div className="w-40 h-10 border border-black border-double hover:border-dotted border-4 rounded-lg flex justify-center items-center shadow-lg bg-gray-200 text-2xl italic">
-              {/* <Clock /> */}
+              <Clock />
             </div>
           </div>
 
@@ -87,7 +87,7 @@ export default function Footer() {
         <hr className="my-6 border-gray-200 sm:mx-auto lg:my-8" />
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-gray-500 sm:text-center">
-            © 2024 <t />
+            © 2025 <t />
             <a href="https://github.com/Mwaisaka" className="hover:underline">
               M-soft Technologies Ltd
             </a>

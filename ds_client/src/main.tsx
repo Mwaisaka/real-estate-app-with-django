@@ -46,6 +46,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
+import Clock from "./components/Clock/Clock";
 
 // Main app component
 function Main(): JSX.Element {
@@ -54,6 +55,7 @@ function Main(): JSX.Element {
       <Route path="/" element={<Layout />}>
         <Route path="/" element={<AdminLoginForm />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/clock" element={<Clock />} />
       </Route>
     )
   );
