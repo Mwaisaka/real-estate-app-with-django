@@ -106,7 +106,7 @@ const AdminLoginForm: React.FC<AdminLoginFormProps> = ({ onLogin, user }) => {
         style={{
           marginBottom: "10px",
           marginTop: "10px",
-          width: "80%",
+          width: "100%",
         }}
       >
         <div className="bg-gray-500 py-3">
