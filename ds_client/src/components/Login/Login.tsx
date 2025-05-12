@@ -26,6 +26,7 @@ const AdminLoginForm: React.FC<AdminLoginFormProps> = ({ onLogin, user }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [refreshPage, setRefreshPage] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("/users")
@@ -36,35 +37,63 @@ const AdminLoginForm: React.FC<AdminLoginFormProps> = ({ onLogin, user }) => {
       });
   }, [refreshPage]);
 
+  // function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  //   e.preventDefault();
+
+  //   // Define default credentials
+  // const defaultUsername = "mwaisaka";
+  // const defaultPassword = "123346";
+
+  //   fetch("http://127.0.0.1:8000/login/", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       // username: formik.values.username,
+  //       // password: formik.values.password,
+  //       username: defaultUsername,
+  //       password : defaultPassword,
+  //     }),
+  //   })
+  //     .then((response) => {
+  //       if (response.status === 400) {
+  //         throw new Error("Both username and password are required.");
+  //       }
+  //       if (!response.ok) {
+  //         throw new Error("Invalid username or password.");
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((user: LoginResponse) => {
+  //       onLogin(user);
+  //       // navigate("/dashboard");
+  //     })
+  //     .catch((error: Error) => {
+  //       setError(error.message);
+  //     });
+  // }
+
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
-    fetch("http://127.0.0.1:8000/login/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: formik.values.username,
-        password: formik.values.password,
-      }),
-    })
-      .then((response) => {
-        if (response.status === 400) {
-          throw new Error("Both username and password are required.");
-        }
-        if (!response.ok) {
-          throw new Error("Invalid username or password.");
-        }
-        return response.json();
-      })
-      .then((user: LoginResponse) => {
-        onLogin(user);
-        // navigate("/dashboard");
-      })
-      .catch((error: Error) => {
-        setError(error.message);
-      });
+  
+    const defaultUsername = "mwaisaka";
+    const defaultPassword = "123456";
+  
+    const inputUsername = formik.values.username;
+    const inputPassword = formik.values.password;
+  
+    // Simulate server-side validation
+    if (inputUsername === defaultUsername && inputPassword === defaultPassword) {
+      const fakeUser: LoginResponse = {
+        username: defaultUsername,
+        token: "fake-jwt-token",
+      };
+      onLogin(fakeUser);
+      navigate("/home")
+    } else {
+      setError("Invalid username or password.");
+    }
   }
 
   const formSchema = yup.object().shape({
@@ -78,25 +107,34 @@ const AdminLoginForm: React.FC<AdminLoginFormProps> = ({ onLogin, user }) => {
       .min(6, "Password must be at least 6 characters"),
   });
 
+  // const formik = useFormik({
+  //   initialValues: {
+  //     username: "",
+  //     password: "",
+  //   },
+  //   validationSchema: formSchema,
+  //   onSubmit: (values) => {
+  //     fetch("users", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(values, null, 2),
+  //     }).then((res) => {
+  //       if (res.status === 200) {
+  //         setRefreshPage(!refreshPage);
+  //       }
+  //     });
+  //   },
+  // });
+
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
     },
     validationSchema: formSchema,
-    onSubmit: (values) => {
-      fetch("users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values, null, 2),
-      }).then((res) => {
-        if (res.status === 200) {
-          setRefreshPage(!refreshPage);
-        }
-      });
-    },
+    onSubmit: () => {}, // No action; real submission handled via handleSubmit
   });
 
   return (
@@ -111,7 +149,7 @@ const AdminLoginForm: React.FC<AdminLoginFormProps> = ({ onLogin, user }) => {
       >
         <div className="bg-gray-500 py-1">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-2 mt-2">
-            Please Login
+            Real Estate Management App 
             <hr
               className="border-t-2 border-red-700 mb-1 py-1"
               style={{ width: "15%", margin: "10px auto" }}
@@ -120,7 +158,7 @@ const AdminLoginForm: React.FC<AdminLoginFormProps> = ({ onLogin, user }) => {
         </div>
 
         <div
-          className="bg-gray-100 py-6 mt-8"
+          className="bg-gray-100 py-4 mt-8"
           style={{
             display: "flex",
             justifyContent: "center",
@@ -129,8 +167,11 @@ const AdminLoginForm: React.FC<AdminLoginFormProps> = ({ onLogin, user }) => {
         >
           <form
             onSubmit={handleSubmit}
-            style={{ margin: "20px", width: "100%", height: "auto" }}
+            style={{ margin: "20px", width: "50%", height: "auto" }}
           >
+            <div className="py-6 font-bold text-2xl">
+            Please login to get started...
+            </div>
             <div className="form-group flex items-center mb-4">
               <label htmlFor="username" className="form-label mr-4 text-left ">
                 Username:
@@ -175,6 +216,12 @@ const AdminLoginForm: React.FC<AdminLoginFormProps> = ({ onLogin, user }) => {
               >
                 Login
               </button>
+            </div>
+            <div className="py-4">
+              Forgot password? <Link to="/resetpassword"><strong>Reset Password</strong></Link>
+            </div>
+            <div>
+              Don't have an account? <Link to="/signup"><strong>Sign Up</strong></Link>
             </div>
           </form>
         </div>

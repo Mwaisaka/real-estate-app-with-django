@@ -33,7 +33,7 @@
 // ReactDOM.createRoot(document.getElementById("root")).render(<Main />);
 
 
-import React from "react";
+import React, {useState} from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import Home from "./components/Home/Home";
@@ -48,12 +48,18 @@ import {
 } from "react-router-dom";
 import Clock from "./components/Clock/Clock";
 
+
 // Main app component
 function Main(): JSX.Element {
+
+  const [user, setUser] = useState(null);
+  function handleLogin(user) {
+    setUser(user);
+  }
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Layout />}>
-        <Route path="/" element={<AdminLoginForm />} />
+        <Route path="/" element={<AdminLoginForm onLogin={handleLogin}/>} />
         <Route path="/home" element={<Home />} />
         <Route path="/clock" element={<Clock />} />
       </Route>
