@@ -1,39 +1,4 @@
-// import React from "react";
-// import ReactDOM from "react-dom/client";
-// import "./index.css";
-// import Home from "./components/Home/Home.tsx";
-// import AdminLoginForm from "./components/Login/Login.tsx";
-// import Layout from "./Layout.tsx";
-
-// import {
-//   Route,
-//   RouterProvider,
-//   createBrowserRouter,
-//   createRoutesFromElements,
-//   useNavigate,
-// } from "react-router-dom";
-
-// function Main() {
-//   const router = createBrowserRouter(
-//     createRoutesFromElements(
-//       <Route path="/" element={<Layout />}>
-//         <Route path="/" element={<AdminLoginForm />} />
-//         <Route path="/home" element={<Home />} />
-//       </Route>
-//     )
-//   );
-
-//   return (
-//     <React.StrictMode>
-//       <RouterProvider router={router}></RouterProvider>
-//     </React.StrictMode>
-//   );
-// }
-
-// ReactDOM.createRoot(document.getElementById("root")).render(<Main />);
-
-
-import React, {useState} from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import Home from "./components/Home/Home";
@@ -48,20 +13,31 @@ import {
 } from "react-router-dom";
 import Clock from "./components/Clock/Clock";
 
-
 // Main app component
 function Main(): JSX.Element {
-
   const [user, setUser] = useState(null);
-  function handleLogin(user) {
-    setUser(user);
+
+  function handleLogin(userData) {
+    setUser(userData); // userData will now be { id, username, fullname }
+    console.log("User logged in successfully:", userData.fullname);
+  }
+
+  function handleLogout() {    
+    console.log("User logged out successfully");
+    // setUser(null);    
   }
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/" element={<Layout />}>
-        <Route path="/" element={<AdminLoginForm onLogin={handleLogin}/>} />
-        <Route path="/home" element={<Home />} />
+      <Route
+        path="/"
+        element={
+          <Layout user={user} onLogin={handleLogin} onLogout={handleLogout} />
+        }
+      >
+        <Route path="/" element={<AdminLoginForm />} />
+        {/* <Route path="/home" element={<Home />} /> */}
         <Route path="/clock" element={<Clock />} />
+        <Route path="/home" element={<Home />} />
       </Route>
     )
   );

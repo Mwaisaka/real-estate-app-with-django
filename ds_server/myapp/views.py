@@ -9,6 +9,7 @@ from datetime import datetime
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
+from .models import Subscriber
 
 
 # Create your views here.
@@ -61,3 +62,9 @@ def login(request):
       return JsonResponse({"error":str(e)},status=500)
   else:
     return JsonResponse({"error":"Post request required"},status=405)
+  
+@api_view(['GET'])
+@csrf_exempt
+def view_users(request):
+    subscriber = Subscriber.objects.all().values()
+    return JsonResponse(list(subscriber), safe=False)

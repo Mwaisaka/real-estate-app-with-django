@@ -1,42 +1,54 @@
 import React, { useEffect, useState, FormEvent } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
-interface User {
-  id: number;
-  username: string;
-  // Add other user fields as necessary
+// interface User {
+//   id: number;
+//   username: string;
+//   // Add other user fields as necessary
+// }
+
+// interface LoginResponse {
+//   // Adjust this based on your backend's login response
+//   username: string;
+//   token?: string;
+//   [key: string]: any;
+// }
+
+// interface AdminLoginFormProps {
+//   onLogin: (user: LoginResponse) => void;
+//   user: User | null;
+// }
+
+interface OutletContextType {
+  user: {
+    id: number;
+    username: string;
+    fullname: string;
+  } | null;
+  onLogin: (userData: any) => void;
+  onLogout: () => void;
 }
 
-interface LoginResponse {
-  // Adjust this based on your backend's login response
-  username: string;
-  token?: string;
-  [key: string]: any;
-}
-
-interface AdminLoginFormProps {
-  onLogin: (user: LoginResponse) => void;
-  user: User | null;
-}
-
-const AdminLoginForm: React.FC<AdminLoginFormProps> = ({ onLogin, user }) => {
+const AdminLoginForm = () => {
   //   const navigate = useNavigate();
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState([]);
   const [error, setError] = useState<string | null>(null);
   const [refreshPage, setRefreshPage] = useState<boolean>(false);
   const navigate = useNavigate();
-
+  // const {onLogin} = useOutletContext();
+  const { onLogin, user } = useOutletContext<OutletContextType>();
+  
   useEffect(() => {
-    fetch("/users")
+    fetch("http://127.0.0.1:8000/users/")
       .then((res) => res.json())
-      .then((users: User[]) => {
+      .then((users) => {
         setUsers(users);
         console.log(users);
       });
-  }, [refreshPage]);
-
+  }, []);
+    
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -57,12 +69,18 @@ const AdminLoginForm: React.FC<AdminLoginFormProps> = ({ onLogin, user }) => {
         if (!response.ok) {
           throw new Error("Invalid username or password.");
         }
+        alert("Login was successful")        
         return response.json();
       })
-      .then((user: LoginResponse) => {
-        onLogin(user);
+      
+      .then((data) => {
+        const user = data.subscriber;    
+        console.log("Logged in user :"+user.username)
+        onLogin(user); // Pass only subscriber object
+        console.log("User data ->"+user.fullname)
         navigate("/home");
       })
+      
       .catch((error: Error) => {
         setError(error.message);
       });

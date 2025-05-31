@@ -5,7 +5,7 @@ import Footer from "./components/Footer/Footer.tsx";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop.tsx";
 // import Quotes from "./components/Quotes/Quotes.jsx";
 
-function Layout() {
+function Layout({ user, onLogin, onLogout }) {
   const location = useLocation();
   const hideHeaderFooter = location.pathname === "/"; // Hide on AdminLoginForm route
   return (
@@ -18,7 +18,7 @@ function Layout() {
 
       <main className="flex-grow w-full px-4 py-4">
         <div className="max-w-full sm:max-w-7xl mx-auto">
-          <Outlet />
+          <Outlet context={{ user, onLogin, onLogout }}/>
         </div>
       </main>
 

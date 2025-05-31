@@ -1,0 +1,92 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&didplay=swap");
+* {
+  font-family: "Montserrat", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+/* Mobile Menu Button */
+.mobile-menu-button {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.mobile-toggle-btn {
+  background: #2c3e50;
+  color: rgb(113, 7, 7);
+  border: none;
+  padding: 10px 15px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* Main dashboard layout */
+.dashboard {
+  display: flex;
+  flex: 1;
+  height: 100vh;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Sidebar styles */
+.sidebar {
+  width: 150px;
+  color: white;
+  transition: width 0.3s ease-in-out;
+}
+
+.sidebar-open {
+  width: 270px;
+}
+
+.sidebar-closed {
+  width: 0;
+  overflow: hidden;
+}
+
+/* Content area */
+.dashboard--content {
+  flex-grow: 1;
+  padding: 2rem;
+  background: #fff;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+/* Adjust content width based on sidebar */
+.content-expanded {
+  margin-left: 10px;
+}
+
+.content-full {
+  margin-left: 0;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .sidebar {
+    position: absolute;
+    height: 100vh;
+    left: 0px;
+    top: 10;
+    width: 150px;  
+  }
+
+  .sidebar-closed {
+    transform: translateX(-100%);
+  }
+
+  .content-expanded {
+    margin-left: 150px;
+  }
+}
