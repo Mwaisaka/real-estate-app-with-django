@@ -79,13 +79,23 @@ const Sidebar = ({ onLogout, onMenuItemClick }) => {
         </div>
 
         <div
+          className={`item ${
+            activeMenuItem === "TenantsList" ? "active" : ""
+          }`}
+          onClick={() => handleClick("TenantsList")}
+        >
+          <BiGroup className="icon" />
+          <span>List of All Tenants</span>
+        </div>
+
+        {/* <div
           className={`item ${activeMenuItem === "Add Blog" ? "active" : ""}`}
           onClick={() => handleClick("Add Blog")}
         >
           <BiTask className="icon" />
           <span>Add a blog</span>
-        </div>
-        <div
+        </div> */}
+        {/* <div
           className={`item ${
             activeMenuItem === "Manage Blogs" ? "active" : ""
           }`}
@@ -93,9 +103,9 @@ const Sidebar = ({ onLogout, onMenuItemClick }) => {
         >
           <BiTask className="icon" />
           <span>Manage Blogs</span>
-        </div>
+        </div> */}
 
-        <div
+        {/* <div
           className={`item ${
             activeMenuItem === "Manage Messages" ? "active" : ""
           }`}
@@ -103,7 +113,7 @@ const Sidebar = ({ onLogout, onMenuItemClick }) => {
         >
           <BiTask className="icon" />
           <span>Manage Messages</span>
-        </div>
+        </div> */}
 
         <div
           className={`item ${

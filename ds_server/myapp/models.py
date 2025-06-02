@@ -23,13 +23,13 @@ class SubscriberManager(BaseUserManager):
     
     def get_by_natural_key(self, username):
         return self.get(username=username)
+ 
     
 class Subscriber(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=255, unique=True)
     fullname = models.CharField(max_length=255)
-    email=models.EmailField(max_length=255, unique=True)
+    email = models.EmailField(max_length=255, unique=True)
     create_date = models.DateField(null=False, blank=True, default=now)
-    # password = models.CharField(max_length=255)  # Store hashed password here
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     
@@ -43,16 +43,32 @@ class Subscriber(AbstractBaseUser, PermissionsMixin):
         #     self.password = make_password(self.password)
         super().save(*args, **kwargs)
         
-    # groups = models.ManyToManyField(
-    #     Group,
-    #     related_name="subscriber_set",  # Unique related name
-    #     blank=True,
-    # )
-    # user_permissions = models.ManyToManyField(
-    #     Permission,
-    #     related_name="subscriber_permissions",  # Unique related name
-    #     blank=True,
-    # )
-
+    
     def __str__(self):
         return f'{self.username} - {self.email}'
+
+
+class Tenant(models.Model):
+    tenant_name = models.CharField(max_length=255)
+    room_number = models.IntegerField()
+    rent_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    join_date = models.DateField()
+    
+    def __str__(self):
+        return self.tenant_name
+
+
+class RentPayment(models.Model):
+    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
+    year = models.IntegerField()
+    month = models.IntegerField()
+    amount_due = models.DecimalField(max_digits=10, decimal_places=2)
+    amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
+    date_paid = models.DateField(null=True, blank=True)
+    
+    class Meta:
+        unique_together = ('tenant', 'year', 'month')
+        ordering = ['-year', '-month']
+        
+    def __str__(self):
+        return f"{self.tenant.tenant_name} - {self.month}/{self.year}"
