@@ -2,7 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import DashboardHome from "./DashboardHome.tsx";
 // import AddPosts from "../../Blogs/AddBlog";
-// import SubscribersList from "./SubscribersList";
+import UsersList from "./UsersList.tsx";
 // import ManageBlogs from "../../Blogs/ManageBlogs";
 // import Messages from "../../Contacts/Messages";
 // import Profile from "./Profile";
@@ -19,8 +19,8 @@ const Card = ({ title, onLogin, user }) => {
     //   return <ManageBlogs />;
     // case "Manage Messages":
     //   return <Messages />;
-    // case "SubscribersList":
-    //   return <SubscribersList />;
+    case "UsersList":
+      return <UsersList />;
     // case "Profile":
     //   return <Profile onLogin={onLogin} user={user}/>;
     default:

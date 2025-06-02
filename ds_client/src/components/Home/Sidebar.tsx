@@ -70,12 +70,12 @@ const Sidebar = ({ onLogout, onMenuItemClick }) => {
 
         <div
           className={`item ${
-            activeMenuItem === "SubscribersList" ? "active" : ""
+            activeMenuItem === "UsersList" ? "active" : ""
           }`}
-          onClick={() => handleClick("SubscribersList")}
+          onClick={() => handleClick("UsersList")}
         >
           <BiGroup className="icon" />
-          <span>List of Active Subscribers</span>
+          <span>List of Active Users</span>
         </div>
 
         <div

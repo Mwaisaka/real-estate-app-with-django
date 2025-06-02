@@ -1,12 +1,22 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import Clock from "../Clock/Clock";
 
 import SoftDev from "../Images/SoftDev.jpg";
 
 export default function Footer() {
+
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+      if (darkMode) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    }, [darkMode]);
   return (
-    <footer className="bg-white border-y">
+    <footer className="bg-white dark:bg-gray-900 border-y">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">

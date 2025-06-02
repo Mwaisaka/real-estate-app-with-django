@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar.tsx";
 import Content from "./Content.tsx";
 import { useOutletContext } from "react-router-dom";
-// import "./dashboard.css";
+import "./dashboard.css";
 
 interface OutletContextType {
   user: {
