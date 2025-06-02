@@ -99,6 +99,7 @@ function TenantsList() {
                     <select value={searchCategory} onChange={handleSelectChange}>
                         <option value="tenant_name">Name</option>
                         <option value="room_number">Room</option>
+                        <option value="rent_amount">Rent</option>
                     </select>
                     <p>Items found: {currentTenants.length}</p>
                 </div>

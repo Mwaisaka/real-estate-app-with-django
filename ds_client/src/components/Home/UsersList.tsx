@@ -89,6 +89,7 @@ function UsersList() {
                     <select value={searchCategory} onChange={handleSelectChange}>
                         <option value="fullname">Name</option>
                         <option value="role">Role</option>
+                        <option value="rent_amount">Rent</option>
                     </select>
                     <p>Items found: {currentUsers.length}</p>
                 </div>
