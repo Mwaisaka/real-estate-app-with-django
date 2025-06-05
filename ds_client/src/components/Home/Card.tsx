@@ -4,6 +4,7 @@ import DashboardHome from "./DashboardHome.tsx";
 // import AddPosts from "../../Blogs/AddBlog";
 import UsersList from "./UsersList.tsx";
 import TenantsList from "./TenantsList.tsx";
+import ManageTenants from "./ManageTenants.tsx";
 // import ManageBlogs from "../../Blogs/ManageBlogs";
 // import Messages from "../../Contacts/Messages";
 // import Profile from "./Profile";
@@ -14,6 +15,8 @@ const Card = ({ title, onLogin, user }) => {
   switch (title) {
     case "Dashboard":
       return <DashboardHome />;
+    case "Manage Tenants":
+      return <ManageTenants />;
     // case "Add Blog":
     //   return <AddPosts />;
     // case "Manage Blogs":

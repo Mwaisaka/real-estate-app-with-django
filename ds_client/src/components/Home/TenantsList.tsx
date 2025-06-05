@@ -108,23 +108,23 @@ function TenantsList() {
                     <thead>
                         <tr style={{ borderBottom: "1px solid #ddd" }}>
                             <th style={{ border: "1px solid #ddd", padding: "8px" }}>
-                                FULLNAME
+                                Tenant Name
                             </th>
                             <th style={{ border: "1px solid #ddd", padding: "8px" }}>
-                                ROOM NUMBER
+                                Room Number
                             </th>
                             <th style={{ border: "1px solid #ddd", padding: "8px" }}>
-                                RENT AMOUNT
+                                Rent Amount
                             </th>
 
                             <th style={{ border: "1px solid #ddd", padding: "8px" }}>
-                                JOIN DATE
+                                Join Date
                             </th>
                             <th style={{ border: "1px solid #ddd", padding: "8px" }}>
-                                OVERDUE MONTHS
+                                Overdue Months
                             </th>
                             <th style={{ border: "1px solid #ddd", padding: "8px" }}>
-                                OVERDUE AMOUNT (KES)
+                                Overdue Amount (Kes)
                             </th>
                             {/* <th style={{ border: "1px solid #ddd", padding: "8px" }}>
                                 ACTION
@@ -137,19 +137,19 @@ function TenantsList() {
                                 <td style={{ border: "1px solid #ddd", padding: "8px" }}>
                                     {tenant.tenant_name}
                                 </td>
-                                <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                                <td style={{ border: "1px solid #ddd", padding: "8px" , textAlign: "center"}}>
                                     {tenant.room_number}
                                 </td>
-                                <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                                <td style={{ border: "1px solid #ddd", padding: "8px" , textAlign: "center"}}>
                                     {tenant.rent_amount}
                                 </td>
-                                <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                                <td style={{ border: "1px solid #ddd", padding: "8px" , textAlign: "center"}}>
                                     {tenant.join_date}
                                 </td>
-                                <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                                <td style={{ border: "1px solid #ddd", padding: "8px" , textAlign: "center"}}>
                                     {tenant.total_overdue_months}
                                 </td>
-                                <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                                <td style={{ border: "1px solid #ddd", padding: "8px" , textAlign: "center"}}>
                                     {tenant.total_overdue_amount}
                                 </td>
 

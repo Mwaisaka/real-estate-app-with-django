@@ -128,7 +128,7 @@ def view_tenants_full_details(request):
     
     for tenant in tenants:
       total_overdue_months = 0
-      total_overdue_amount = 0
+      total_overdue_amount = 0.00
       
       current = tenant.join_date.replace(day=1)
       end = today.replace(day=1)
@@ -152,10 +152,136 @@ def view_tenants_full_details(request):
         'id': tenant.id,
         'tenant_name': tenant.tenant_name,
         'room_number': tenant.room_number,
-        'rent_amount': str(tenant.rent_amount),
+        'rent_amount': format(tenant.rent_amount, ',.2f'),
         'join_date': tenant.join_date.strftime('%Y-%m-%d'),
         'total_overdue_months': total_overdue_months,
-        'total_overdue_amount': round(total_overdue_amount, 2),
+        'total_overdue_amount': format(total_overdue_amount, ',.2f'),
       })
       
     return JsonResponse(data, safe=False)
+  
+@api_view(['DELETE'])
+@csrf_exempt
+def delete_tenant(request,id):
+  if request.method == "DELETE":
+    try:
+      tenant = get_object_or_404(Tenant, id=id)
+      tenant.delete()
+      return JsonResponse({"message": "Tenant deleted successfully"}, status=200)
+    except Tenant.DoesNotExist:
+      return JsonResponse({"error": "Tenant does not exist"}, status=404)
+  else:
+    return JsonResponse({"erro": "Delete request required"}, status=405)
+
+@api_view(['POST'])
+@csrf_exempt
+def add_tenant(request):
+  if request.method == "POST":
+    try:
+      data=json.loads(request.body)
+      
+      #Validate required fields
+      required_fields = ['tenant_name', 'room_number', 'rent_amount', 'join_date']
+      for field in required_fields:
+        if field not in data:
+          return JsonResponse({"error" :  f"{field} is required."}, status=400)
+      
+      #CreateTenant
+      tenant = Tenant.objects.create(
+        tenant_name=data['tenant_name'],
+        room_number=data['room_number'],
+        rent_amount=data['rent_amount'],
+        join_date=datetime.strptime(data['join_date'], "%Y-%m-%d").date(),
+      )
+      
+      return JsonResponse({"message": "Tenant added successfully.",
+                  "tenant": {
+                    "id": tenant.id,
+                    "tenant_name": tenant.tenant_name,
+                    "room_number": tenant.room_number,
+                    "rent_amount": tenant.rent_amount,
+                    "join_date": tenant.join_date.strftime('%Y-%m-%d'),
+                  }
+                  }, status=201)
+      
+    except json.JSONDecodeError:
+      return JsonResponse({"error": "Invalid JSON"}, status=400)
+    except Exception as e:
+      return JsonResponse({"error": str(e)}, status=500)
+
+@api_view(['PUT'])
+@csrf_exempt
+def edit_tenant(request, id):
+    try:
+        tenant = get_object_or_404(Tenant, id=id)
+        data = json.loads(request.body)
+
+        # Update tenant details
+        if 'tenant_name' in data:
+            tenant.tenant_name = data['tenant_name']
+        if 'room_number' in data:
+            tenant.room_number = data['room_number']
+        if 'rent_amount' in data:
+            tenant.rent_amount = data['rent_amount']
+        if 'join_date' in data:
+            tenant.join_date = datetime.strptime(data['join_date'], "%Y-%m-%d").date()
+        tenant.save()
+
+        # Update rent payments if provided
+        updated_payments = []
+        if 'rent_payments' in data and isinstance(data['rent_payments'], list):
+            for payment_data in data['rent_payments']:
+                year = payment_data.get('year')
+                month = payment_data.get('month')
+                amount_due = payment_data.get('amount_due')
+                amount_paid = payment_data.get('amount_paid')
+                date_paid = payment_data.get('date_paid', None)
+
+                if not all([year, month, amount_due is not None, amount_paid is not None]):
+                    return JsonResponse({
+                        "error": "Each rent_payment must include year, month, amount_due, and amount_paid."
+                    }, status=400)
+
+                rent_payment, created = RentPayment.objects.get_or_create(
+                    tenant=tenant,
+                    year=year,
+                    month=month,
+                    defaults={
+                        'amount_due': amount_due,
+                        'amount_paid': amount_paid,
+                        'date_paid': datetime.strptime(date_paid, '%Y-%m-%d').date() if date_paid else None
+                    }
+                )
+
+                if not created:
+                    rent_payment.amount_due = amount_due
+                    rent_payment.amount_paid = amount_paid
+                    rent_payment.date_paid = (
+                        datetime.strptime(date_paid, '%Y-%m-%d').date() if date_paid else None
+                    )
+                    rent_payment.save()
+
+                updated_payments.append({
+                    "year": rent_payment.year,
+                    "month": rent_payment.month,
+                    "amount_due": float(rent_payment.amount_due),
+                    "amount_paid": float(rent_payment.amount_paid),
+                    "date_paid": rent_payment.date_paid.strftime('%Y-%m-%d') if rent_payment.date_paid else None
+                })
+
+        return JsonResponse({
+            "message": "Tenant and rent payments updated successfully.",
+            "tenant": {
+                "id": tenant.id,
+                "tenant_name": tenant.tenant_name,
+                "room_number": tenant.room_number,
+                "rent_amount": float(tenant.rent_amount),
+                "join_date": tenant.join_date.strftime('%Y-%m-%d')
+            },
+            "updated_rent_payments": updated_payments
+        }, status=200)
+
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)

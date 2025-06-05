@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar.tsx";
 import Content from "./Content.tsx";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext , useNavigate} from "react-router-dom";
 import "./dashboard.css";
 
 interface OutletContextType {
@@ -20,6 +20,7 @@ const Home = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   // const {user, onLogout, onLogin} = useOutletContext();
   const { user, onLogin, onLogout } = useOutletContext<OutletContextType>();
+  const navigate = useNavigate();
   
 
   useEffect(() => {
@@ -93,7 +94,7 @@ const Home = () => {
   }
   return (
     <h1 className="text-center mt-10 text-xl">
-      User not logged in. Please log in to view the Dashboard...
+       <a href="/" className="text-blue-700">User not logged in! Click here to log in...</a>
     </h1>
   );
 };

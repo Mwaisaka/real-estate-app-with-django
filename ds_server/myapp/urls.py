@@ -9,4 +9,7 @@ urlpatterns = [
     path('tenant_payment_status/', views.tenant_payment_status, name="tenant_payment_status"),
     path('tenants/', views.view_tenants, name='tenants'),
     path('tenants_all_details/', views.view_tenants_full_details, name='tenants_all_details'),
+    path('delete_tenant/<int:id>', views.delete_tenant, name='delete_tenant'),
+    path("add_tenant/", views.add_tenant, name="add_tenant"),
+    path('edit_tenant/<int:id>/', views.edit_tenant, name='edi_-tenant'),
 ]
