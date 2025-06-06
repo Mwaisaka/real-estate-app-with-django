@@ -126,12 +126,12 @@ export default function ManageTenants() {
   };
 
   return (
-    <div style={{ padding: "10px" }}>
+    <div style={{ padding: "0px", marginTop: "20px"}}>
       <button
         onClick={handleAddNew}
         style={{
           marginBottom: "10px",
-          padding: "8px 16px",
+          padding: "5px 10px",
           backgroundColor: "#4caf50",
           color: "white",
           border: "none",
@@ -140,7 +140,7 @@ export default function ManageTenants() {
       >
         {isEditing ? "Edit Tenant" : "Add New Tenant"}
       </button>
-
+        
       {showForm && (
         <>
           <form
@@ -186,7 +186,10 @@ export default function ManageTenants() {
             ].map(({ label, id, type }) => (
               <div
                 key={id}
-                style={{ display: "flex", flexDirection: "column" }}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
               >
                 <label htmlFor={id}>{label}</label>
                 <input
@@ -202,6 +205,12 @@ export default function ManageTenants() {
                     "rent_amount",
                     "join_date",
                   ].includes(id)}
+                  readOnly={
+                    isEditing != null &&
+                    ["total_overdue_months", "total_overdue_amount"].includes(
+                      id
+                    )
+                  }
                 />
               </div>
             ))}
@@ -219,13 +228,20 @@ export default function ManageTenants() {
               >
                 {isEditing ? "Update" : "Add"}
               </button>
-              <button onClick={() => {setShowForm(false); setIsEditing(null)}}>Cancel</button>
+              <button
+                onClick={() => {
+                  setShowForm(false);
+                  setIsEditing(null);
+                }}
+              >
+                Cancel
+              </button>
             </div>
           </form>
         </>
       )}
 
-      <table style={{ borderCollapse: "collapse", width: "100%" }}>
+      <table style={{ borderCollapse: "collapse", width: "100%"}}>
         <thead>
           <tr style={{ borderBottom: "1px solid #ddd" }}>
             <th style={{ border: "1px solid #ddd", padding: "5px" }}>
@@ -251,7 +267,7 @@ export default function ManageTenants() {
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody >
           {tenants.map((t) => (
             <tr key={t.id} style={{ borderBottom: "1px solid #ddd" }}>
               <td style={{ border: "1px solid #ddd", padding: "8px" }}>
@@ -320,6 +336,7 @@ export default function ManageTenants() {
           ))}
         </tbody>
       </table>
+     
     </div>
   );
 }

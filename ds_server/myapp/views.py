@@ -285,3 +285,77 @@ def edit_tenant(request, id):
         return JsonResponse({"error": "Invalid JSON"}, status=400)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
+
+@api_view(['POST'])
+@csrf_exempt
+def add_payment(request):
+   if request.method == "POST":
+     try:
+       tenant_id=request.data.get('tenant')
+       year=int(request.data.get('year'))
+       month=int(request.data.get('month'))
+       amount_due=float(request.data.get('amount_due'))
+       amount_paid=float(request.data.get('amount_paid'))
+       date_paid=request.data.get('date_paid')
+       
+       #Validate tenant exists
+       try:
+         tenant=Tenant.objects.get(id=tenant_id)
+       except json.JSONDecodeError:
+         return JsonResponse({"error":"Tenant not found"}, status=400)
+       
+       #Check for duplicate month and year
+       if RentPayment.objects.filter(tenant=tenant, year=year, month=month).exists():
+              return JsonResponse({"error": "Payment for this month already exists."},
+                  status=400)
+         
+        # Create the rent payment manually
+       rent_payment = RentPayment.objects.create(
+              tenant=tenant,
+              year=year,
+              month=month,
+              amount_due=amount_due,
+              amount_paid=amount_paid,
+              date_paid=date_paid if date_paid else None
+          )
+        
+       return JsonResponse({
+                    "message": "Rent payment added successfully.",
+                    "payment_id": rent_payment.id,
+                }, status=201)
+     except json.JSONDecodeError:
+      return JsonResponse({"error": "Invalid JSON"}, status=400)
+     except Exception as e:
+      return JsonResponse({"error": str(e)}, status=500)
+
+@api_view(['GET'])
+@csrf_exempt
+def view_rent_payments(request):
+    payments = RentPayment.objects.select_related('tenant').all()
+    result = []
+    for payment in payments:
+        result.append({
+            "id": payment.id,
+            "tenant_id": payment.tenant.id,
+            "tenant_name": payment.tenant.tenant_name,
+            "year": payment.year,
+            "month": payment.month,
+            "amount_due": payment.amount_due,
+            "amount_paid": payment.amount_paid,
+            "date_paid": payment.date_paid,
+        })
+
+    return JsonResponse(result, safe=False)
+
+@api_view(['DELETE'])
+@csrf_exempt
+def delete_payment(request,id):
+  if request.method == "DELETE":
+    try:
+      payment = get_object_or_404(RentPayment, id=id)
+      payment.delete()
+      return JsonResponse({"message": "Payment deleted successfully"}, status=200)
+    except RentPayment.DoesNotExist:
+      return JsonResponse({"error": "Payment does not exist"}, status=404)
+  else:
+    return JsonResponse({"erro": "Delete request required"}, status=405)

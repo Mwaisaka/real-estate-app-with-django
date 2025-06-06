@@ -98,6 +98,16 @@ const Sidebar = ({ onLogout, onMenuItemClick }) => {
           <span>Manage Tenants</span>
         </div>
 
+        <div
+          className={`item ${
+            activeMenuItem === "Rent Payment" ? "active" : ""
+          }`}
+          onClick={() => handleClick("Rent Payment")}
+        >
+          <BiTask className="icon" />
+          <span>Rent Payments</span>
+        </div>
+
         {/* <div
           className={`item ${activeMenuItem === "Add Blog" ? "active" : ""}`}
           onClick={() => handleClick("Add Blog")}
