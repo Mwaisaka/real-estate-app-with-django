@@ -359,3 +359,54 @@ def delete_payment(request,id):
       return JsonResponse({"error": "Payment does not exist"}, status=404)
   else:
     return JsonResponse({"erro": "Delete request required"}, status=405)
+  
+@api_view(['PUT'])
+@csrf_exempt
+def edit_payment(request, id):
+  if request.method == "PUT":
+    try:
+      data = json.loads(request.body)
+
+      #Fetch the repayment entry
+      rent_payment = get_object_or_404(RentPayment, id=id)
+
+      #Optional fields to update
+      tenant_id = data.get("tenant")
+      if tenant_id:
+        try:
+          tenant=Tenant.objects.get(id=tenant_id)
+          rent_payment.tenant=tenant
+        except Tenant.DoesNotExist:
+          return JsonResponse({"error": "Tenant not found"}, 404)
+      if "year" in data:
+        rent_payment.year=data['year']
+      if "month" in data:
+        rent_payment.month=data["month"]
+      if "amount_due" in data:
+        rent_payment.amount_due=float(data['amount_due'])
+      if "amount_paid" in data:
+        rent_payment.amount_paid=float(data['amount_paid'])
+      if "date_paid" in data:
+        rent_payment.date_paid=datetime.strptime(data['date_paid'], '%Y-%m-%d').date()
+        
+      rent_payment.save()
+      
+      return JsonResponse({
+                "message": "Rent payment updated successfully.",
+                "updated_payment": {
+                    "id": rent_payment.id,
+                    "tenant_id": rent_payment.tenant.id,
+                    "tenant_name": rent_payment.tenant.tenant_name,
+                    "year": rent_payment.year,
+                    "month": rent_payment.month,
+                    "amount_due": rent_payment.amount_due,
+                    "amount_paid": rent_payment.amount_paid,
+                    "date_paid": rent_payment.date_paid.strftime('%Y-%m-%d') if rent_payment.date_paid else None
+                }
+            }, status=200)
+    except json.JSONDecodeError:
+      return JsonResponse({"error": "Invalid JSON payload"}, status=400)
+    except Exception as e:
+      return JsonResponse({"error": str(e)}, status = 500)
+  else:
+    return JsonResponse({"error": "PUT request is required"}, status=405)

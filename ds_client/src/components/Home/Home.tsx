@@ -93,8 +93,8 @@ const Home = () => {
     );
   }
   return (
-    <h1 className="text-center mt-10 text-xl">
-       <a href="/" className="text-blue-700">User not logged in! Click here to log in...</a>
+    <h1 className="text-center mt-10 text-xl">User not logged in!
+       <a href="/" className="text-blue-700"> Click here to log in...</a>
     </h1>
   );
 };

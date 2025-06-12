@@ -1,7 +1,7 @@
 import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 
 interface RentPayment {
-  id? : number;
+  id?: number;
   tenant_id?: number;
   tenant_name: string;
   year: number;
@@ -54,7 +54,7 @@ export default function RentPayments() {
       .then((data) => setTenants(data));
   };
 
-  const handlePaymentChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handlePaymentChange = (e: ChangeEvent<HTMLInputElement| HTMLSelectElement>) => {
     const { name, value } = e.target;
     setPaymentForm({ ...paymentForm, [name]: value });
   };
@@ -62,8 +62,14 @@ export default function RentPayments() {
   const handleSubmitPayment = (e: FormEvent) => {
     e.preventDefault();
 
-    fetch("http://127.0.0.1:8000/add_payment/", {
-      method: "POST",
+    const url = isEditing
+      ? `http://127.0.0.1:8000/edit_payment/${isEditing}/`
+      : "http://127.0.0.1:8000/add_payment/";
+
+    const method = isEditing ? "PUT" : "POST";
+
+    fetch(url, {
+      method: method,
       headers: {
         "Content-Type": "application/json",
       },
@@ -74,7 +80,11 @@ export default function RentPayments() {
         if (data.error) {
           alert(`Error: ${data.error}`);
         } else {
-          alert("Payment added successfully!");
+          alert(
+            isEditing
+              ? "Payment updated successfully!"
+              : "Payment added successfully!"
+          );
           // Optionally refresh data or reset form
           setPaymentForm({
             tenant: "",
@@ -84,10 +94,25 @@ export default function RentPayments() {
             amount_paid: 0,
             date_paid: "",
           });
+          setIsEditing(null);
           setShowForm(false); // hide form after submit
+          fetchTenantsPayments(); // refresh the table
         }
       })
       .catch((err) => console.error("Payment error:", err));
+  };
+
+  const handleEdit = (rentpayment: RentPayment) => {
+    setPaymentForm({
+      tenant: rentpayment.tenant_id?.toString() || "",
+      year: rentpayment.year,
+      month: rentpayment.month,
+      amount_due: rentpayment.amount_due,
+      amount_paid: rentpayment.amount_paid,
+      date_paid: rentpayment.date_paid,
+    });
+    setIsEditing(rentpayment.id ?? null);
+    setShowForm(true); // show form when editing
   };
 
   const handleDelete = async (id: number | undefined) => {
@@ -161,8 +186,6 @@ export default function RentPayments() {
               border: "1px solid #ccc",
             }}
           >
-            <h3>Add Rent Payment</h3>
-
             <div
               style={{
                 display: "flex",
@@ -208,6 +231,8 @@ export default function RentPayments() {
                 <input
                   type="number"
                   name="month"
+                  min={1}
+                  max={12}
                   value={paymentForm.month}
                   onChange={handlePaymentChange}
                   placeholder="Month"
@@ -255,7 +280,7 @@ export default function RentPayments() {
               <div>
                 <br />
                 <button type="submit" style={{ padding: "6px 12px" }}>
-                  Add Payment
+                  {isEditing ? "Update" : "Add"}
                 </button>
                 <button
                   onClick={() => {
@@ -295,7 +320,7 @@ export default function RentPayments() {
         </thead>
         <tbody>
           {payments.map((t) => (
-            <tr key={t.tenant_id} style={{ borderBottom: "1px solid #ddd" }}>
+            <tr key={t.id} style={{ borderBottom: "1px solid #ddd" }}>
               <td style={{ border: "1px solid #ddd", padding: "8px" }}>
                 {t.tenant_name}
               </td>
