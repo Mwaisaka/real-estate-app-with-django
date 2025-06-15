@@ -12,9 +12,9 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import Clock from "./components/Clock/Clock";
-import ManageTenants from "./components/Home/ManageTenants";
-import RentPayments from "./components/Home/RentPayments";
-import TenantStatement from "./components/Home/TenantStatement";
+import ManageTenants from "./components/Home/Tenants/ManageTenants";
+import RentPayments from "./components/Home/Tenants/RentPayments";
+import TenantStatement from "./components/Home/Tenants/TenantStatement";
 
 // Main app component
 function Main(): JSX.Element {

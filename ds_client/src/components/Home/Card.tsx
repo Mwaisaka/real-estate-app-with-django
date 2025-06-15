@@ -3,10 +3,10 @@ import { useParams } from "react-router-dom";
 import DashboardHome from "./DashboardHome.tsx";
 // import AddPosts from "../../Blogs/AddBlog";
 import UsersList from "./UsersList.tsx";
-import TenantsList from "./TenantsList.tsx";
-import ManageTenants from "./ManageTenants.tsx";
-import RentPayments from "./RentPayments.tsx";
-import TenantStatement from "./TenantStatement.tsx";
+import TenantsList from "./Tenants/TenantsList.tsx";
+import ManageTenants from "./Tenants/ManageTenants.tsx";
+import RentPayments from "./Tenants/RentPayments.tsx";
+import TenantStatement from "./Tenants/TenantStatement.tsx";
 // import Profile from "./Profile";
 
 const Card = ({ title, onLogin, user }) => {
