@@ -10,6 +10,8 @@ from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Subscriber, Tenant, RentPayment
 from dateutil.relativedelta import relativedelta
+import calendar
+from django.utils.timezone import localtime, now
 
 
 # Create your views here.
@@ -318,10 +320,15 @@ def add_payment(request):
               amount_paid=amount_paid,
               date_paid=date_paid if date_paid else None
           )
+       
+       # Get month name
+       month_name = calendar.month_name[month]
         
        return JsonResponse({
                     "message": "Rent payment added successfully.",
                     "payment_id": rent_payment.id,
+                    "month": month_name,
+                    "year": year
                 }, status=201)
      except json.JSONDecodeError:
       return JsonResponse({"error": "Invalid JSON"}, status=400)
@@ -339,7 +346,7 @@ def view_rent_payments(request):
             "tenant_id": payment.tenant.id,
             "tenant_name": payment.tenant.tenant_name,
             "year": payment.year,
-            "month": payment.month,
+            "month": calendar.month_name[payment.month][:3], 
             "amount_due": payment.amount_due,
             "amount_paid": payment.amount_paid,
             "date_paid": payment.date_paid,
@@ -382,8 +389,6 @@ def edit_payment(request, id):
         rent_payment.year=data['year']
       if "month" in data:
         rent_payment.month=data["month"]
-      if "amount_due" in data:
-        rent_payment.amount_due=float(data['amount_due'])
       if "amount_paid" in data:
         rent_payment.amount_paid=float(data['amount_paid'])
       if "date_paid" in data:
@@ -399,7 +404,6 @@ def edit_payment(request, id):
                     "tenant_name": rent_payment.tenant.tenant_name,
                     "year": rent_payment.year,
                     "month": rent_payment.month,
-                    "amount_due": rent_payment.amount_due,
                     "amount_paid": rent_payment.amount_paid,
                     "date_paid": rent_payment.date_paid.strftime('%Y-%m-%d') if rent_payment.date_paid else None
                 }
@@ -410,3 +414,82 @@ def edit_payment(request, id):
       return JsonResponse({"error": str(e)}, status = 500)
   else:
     return JsonResponse({"error": "PUT request is required"}, status=405)
+
+@api_view(['GET'])
+@csrf_exempt
+def tenant_statement(request, id):
+ 
+  try:
+    tenant = get_object_or_404(Tenant, id=id)
+    today = date.today()
+    now_time = localtime(now()) 
+    
+    # Calculate overdue months & total_due   
+    total_due =0.0 
+    total_paid = 0.0
+    total_overdue_months = 0
+    
+    join = tenant.join_date.replace(day=1)
+    current = today.replace(day=1)
+    
+    expected_months = []
+    while join < current:
+          expected_months.append((join.year, join.month))
+          join += relativedelta(months=1)
+    
+    payment_map = {
+          (p.year, p.month): p
+          for p in RentPayment.objects.filter(tenant=tenant)
+      }
+    
+    payment_records = []
+  
+    for year, month in expected_months:
+      payment_obj = payment_map.get((year, month), None)
+      if isinstance(payment_obj, RentPayment):
+          due = float(payment_obj.amount_due)
+          paid = float(payment_obj.amount_paid)
+          date_paid = payment_obj.date_paid.strftime('%Y-%m-%d') if payment_obj.date_paid else None
+      else:
+          due = float(tenant.rent_amount)
+          paid = 0.0
+          date_paid = None
+      
+      if paid<due:
+        total_overdue_months +=1
+        total_due += due - paid
+      
+      total_paid +=paid
+      
+      payment_records.append({
+        'year' : year,
+        'month': calendar.month_name[month][:3],
+        'amount_due': format(due, ',.2f'),
+        'amount_paid': format(paid, ',.2f'),
+        'balance': format(due - paid, ',.2f'),
+        'date_paid': date_paid,
+      })
+      
+      total_rent_due = len(expected_months) * float(tenant.rent_amount)
+      statement = {
+            'generated_on': now_time.strftime('%d-%m-%Y %H:%M:%S'),
+            'tenant': {
+                'id': tenant.id,
+                'tenant_name': tenant.tenant_name,
+                'room_number': tenant.room_number,
+                'rent_amount': format(tenant.rent_amount, ',.2f'),
+                'join_date': tenant.join_date.strftime('%d-%m-%Y'),
+            },
+            'payment_history': payment_records,
+            'summary': {
+                'total_due': format(total_rent_due, ',.2f'),
+                'total_paid': format(total_paid, ',.2f'),
+                'balance': format(total_rent_due - total_paid, ',.2f'),
+                'total_overdue_months': total_overdue_months,
+            }
+        }      
+    return JsonResponse(statement, status = 200)
+  except Exception as e:
+    return JsonResponse({'error': str(e)}, status=500)
+      
+    

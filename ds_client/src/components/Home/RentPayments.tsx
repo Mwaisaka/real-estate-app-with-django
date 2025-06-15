@@ -28,7 +28,7 @@ export default function RentPayments() {
     tenant: "", // tenant ID
     year: new Date().getFullYear(),
     month: new Date().getMonth() + 1,
-    amount_due: 0,
+
     amount_paid: 0,
     date_paid: "",
   });
@@ -54,7 +54,9 @@ export default function RentPayments() {
       .then((data) => setTenants(data));
   };
 
-  const handlePaymentChange = (e: ChangeEvent<HTMLInputElement| HTMLSelectElement>) => {
+  const handlePaymentChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setPaymentForm({ ...paymentForm, [name]: value });
   };
@@ -90,7 +92,7 @@ export default function RentPayments() {
             tenant: "",
             year: new Date().getFullYear(),
             month: new Date().getMonth() + 1,
-            amount_due: 0,
+
             amount_paid: 0,
             date_paid: "",
           });
@@ -107,7 +109,7 @@ export default function RentPayments() {
       tenant: rentpayment.tenant_id?.toString() || "",
       year: rentpayment.year,
       month: rentpayment.month,
-      amount_due: rentpayment.amount_due,
+
       amount_paid: rentpayment.amount_paid,
       date_paid: rentpayment.date_paid,
     });
@@ -153,7 +155,6 @@ export default function RentPayments() {
       tenant: "",
       year: new Date().getFullYear(),
       month: new Date().getMonth() + 1,
-      amount_due: 0,
       amount_paid: 0,
       date_paid: "",
     });
@@ -163,6 +164,9 @@ export default function RentPayments() {
 
   return (
     <div style={{ padding: "0px", marginTop: "20px" }}>
+      <div className="font-bold text-xl text-center mb-2 underline">
+        <h1>Tenants' Monthly Rent Payments</h1>
+      </div>
       <button
         onClick={handleAddNew}
         style={{
@@ -241,19 +245,6 @@ export default function RentPayments() {
               </div>
 
               <div>
-                <label>Amount Due</label>
-                <br />
-                <input
-                  type="number"
-                  name="amount_due"
-                  value={paymentForm.amount_due}
-                  onChange={handlePaymentChange}
-                  placeholder="Amount Due"
-                  required
-                />
-              </div>
-
-              <div>
                 <label>Amount Paid</label>
                 <br />
                 <input
@@ -304,9 +295,7 @@ export default function RentPayments() {
             </th>
             <th style={{ border: "1px solid #ddd", padding: "5px" }}>Year</th>
             <th style={{ border: "1px solid #ddd", padding: "5px" }}>Month</th>
-            <th style={{ border: "1px solid #ddd", padding: "5px" }}>
-              Amount Due
-            </th>
+
             <th style={{ border: "1px solid #ddd", padding: "5px" }}>
               Amount Paid
             </th>
@@ -342,15 +331,7 @@ export default function RentPayments() {
               >
                 {t.month}
               </td>
-              <td
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "8px",
-                  textAlign: "center",
-                }}
-              >
-                {t.amount_due}
-              </td>
+
               <td
                 style={{
                   border: "1px solid #ddd",

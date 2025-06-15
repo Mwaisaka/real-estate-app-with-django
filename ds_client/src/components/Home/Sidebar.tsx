@@ -68,7 +68,7 @@ const Sidebar = ({ onLogout, onMenuItemClick }) => {
           <span>Dashboard Home</span>
         </div>
 
-        <div
+        {/* <div
           className={`item ${
             activeMenuItem === "UsersList" ? "active" : ""
           }`}
@@ -76,9 +76,9 @@ const Sidebar = ({ onLogout, onMenuItemClick }) => {
         >
           <BiGroup className="icon" />
           <span>List of Active Users</span>
-        </div>
+        </div> */}
 
-        <div
+        {/* <div
           className={`item ${
             activeMenuItem === "TenantsList" ? "active" : ""
           }`}
@@ -86,7 +86,7 @@ const Sidebar = ({ onLogout, onMenuItemClick }) => {
         >
           <BiGroup className="icon" />
           <span>List of All Tenants</span>
-        </div>
+        </div> */}
 
          <div
           className={`item ${
@@ -105,7 +105,17 @@ const Sidebar = ({ onLogout, onMenuItemClick }) => {
           onClick={() => handleClick("Rent Payment")}
         >
           <BiTask className="icon" />
-          <span>Rent Payments</span>
+          <span>Manage Rent Payments</span>
+        </div>
+
+         <div
+          className={`item ${
+            activeMenuItem === "Tenant Statement" ? "active" : ""
+          }`}
+          onClick={() => handleClick("Tenant Statement")}
+        >
+          <BiTask className="icon" />
+          <span>Reports</span>
         </div>
 
         {/* <div
@@ -135,7 +145,7 @@ const Sidebar = ({ onLogout, onMenuItemClick }) => {
           <span>Manage Messages</span>
         </div> */}
 
-        <div
+        {/* <div
           className={`item ${
             activeMenuItem === "Profile" ? "active" : ""
           }`}
@@ -143,7 +153,7 @@ const Sidebar = ({ onLogout, onMenuItemClick }) => {
         >
           <BiTask className="icon" />
           <span>View Profile</span>
-        </div>
+        </div> */}
 
         <a href="#" className="item">
           <BiHelpCircle className="icon" />

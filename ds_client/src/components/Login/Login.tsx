@@ -128,7 +128,7 @@ const AdminLoginForm = () => {
           width: "100%",
         }}
       >
-        <div className="bg-gray-500 py-1">
+        <div className="bg-gray-200 py-1">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-2 mt-2">
             Real Estate Management App
             <hr
@@ -204,12 +204,12 @@ const AdminLoginForm = () => {
                 <strong>Reset Password</strong>
               </Link>
             </div>
-            <div>
+            {/* <div>
               Don't have an account?{" "}
               <Link to="/signup">
                 <strong>Sign Up</strong>
               </Link>
-            </div>
+            </div> */}
           </form>
         </div>
       </div>

@@ -8,6 +8,7 @@ interface Tenant {
   join_date: string;
   total_overdue_months: number;
   total_overdue_amount: number;
+  [key: string]: any; // for dynamic key access in searchCategory
 }
 
 export default function ManageTenants() {
@@ -22,6 +23,10 @@ export default function ManageTenants() {
     total_overdue_amount: 0,
   });
   const [isEditing, setIsEditing] = useState<number | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchCategory, setSearchCategory] = useState<string>("tenant_name");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const tenantsPerPage = 15;
 
   useEffect(() => {
     fetchTenants();
@@ -32,6 +37,22 @@ export default function ManageTenants() {
       .then((res) => res.json())
       .then((data) => setTenants(data));
   };
+
+  const indexOfLastTenant = currentPage * tenantsPerPage;
+  const indexOfFirstTenant = indexOfLastTenant - tenantsPerPage;
+  const currentTenants = tenants
+    .filter((tenant) => {
+      const value = tenant[searchCategory];
+      if (typeof value === "string") {
+        return value.toLowerCase().includes(searchTerm.toLowerCase());
+      } else if (typeof value === "number") {
+        return value.toString().includes(searchTerm);
+      }
+      return false;
+    })
+    .slice(indexOfFirstTenant, indexOfLastTenant);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -125,22 +146,61 @@ export default function ManageTenants() {
     setShowForm(true);
   };
 
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSearchCategory(event.target.value);
+    setCurrentPage(1);
+  };
+
   return (
-    <div style={{ padding: "0px", marginTop: "20px"}}>
-      <button
-        onClick={handleAddNew}
+    <div style={{ padding: "0px", marginTop: "20px" }}>
+      <div className="font-bold text-2xl text-center mb-2 underline">
+        <h1>Tenants' List</h1>
+      </div>
+      <div className="bg-gray-300"
         style={{
-          marginBottom: "10px",
-          padding: "5px 10px",
-          backgroundColor: "#4caf50",
-          color: "white",
-          border: "none",
-          borderRadius: "4px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          margin: "20px 0",
+          flexWrap: "wrap", // optional for responsiveness
         }}
       >
-        {isEditing ? "Edit Tenant" : "Add New Tenant"}
-      </button>
-        
+        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+          <input
+            type="text"
+            placeholder="Enter search term"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+          <select value={searchCategory} onChange={handleSelectChange}>
+            <option value="tenant_name">Tenant Name</option>
+            <option value="room_number">Room Number</option>
+            <option value="rent_amount">Rent Amount</option>
+          </select>
+          <p style={{ margin: 0 }}>Items found: {currentTenants.length}</p>
+        </div>
+        <div>
+          <button
+            onClick={handleAddNew}
+            style={{
+              padding: "5px 5px",
+              backgroundColor: "#4caf50",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              fontSize: "14px",
+            }}
+          >
+            {isEditing ? "Edit Tenant" : "Add New Tenant"}
+          </button>
+        </div>
+      </div>
+
       {showForm && (
         <>
           <form
@@ -241,7 +301,7 @@ export default function ManageTenants() {
         </>
       )}
 
-      <table style={{ borderCollapse: "collapse", width: "100%"}}>
+      <table style={{ borderCollapse: "collapse", width: "100%" }}>
         <thead>
           <tr style={{ borderBottom: "1px solid #ddd" }}>
             <th style={{ border: "1px solid #ddd", padding: "5px" }}>
@@ -267,8 +327,8 @@ export default function ManageTenants() {
             </th>
           </tr>
         </thead>
-        <tbody >
-          {tenants.map((t) => (
+        <tbody>
+          {currentTenants.map((t) => (
             <tr key={t.id} style={{ borderBottom: "1px solid #ddd" }}>
               <td style={{ border: "1px solid #ddd", padding: "8px" }}>
                 {t.tenant_name}
@@ -336,7 +396,18 @@ export default function ManageTenants() {
           ))}
         </tbody>
       </table>
-     
+
+      {/* Pagination */}
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <h3>Page</h3>
+        {[...Array(Math.ceil(tenants.length / tenantsPerPage)).keys()].map(
+          (number) => (
+            <button key={number} onClick={() => paginate(number + 1)}>
+              {number + 1}
+            </button>
+          )
+        )}
+      </div>
     </div>
   );
 }

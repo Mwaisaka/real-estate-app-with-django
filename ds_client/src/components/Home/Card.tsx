@@ -6,6 +6,7 @@ import UsersList from "./UsersList.tsx";
 import TenantsList from "./TenantsList.tsx";
 import ManageTenants from "./ManageTenants.tsx";
 import RentPayments from "./RentPayments.tsx";
+import TenantStatement from "./TenantStatement.tsx";
 // import Profile from "./Profile";
 
 const Card = ({ title, onLogin, user }) => {
@@ -28,6 +29,8 @@ const Card = ({ title, onLogin, user }) => {
       return <TenantsList />;
     case "Rent Payment":
       return <RentPayments />;
+    case "Tenant Statement":
+      return <TenantStatement />;
     // case "Profile":
     //   return <Profile onLogin={onLogin} user={user}/>;
     default:

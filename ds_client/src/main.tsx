@@ -12,6 +12,9 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import Clock from "./components/Clock/Clock";
+import ManageTenants from "./components/Home/ManageTenants";
+import RentPayments from "./components/Home/RentPayments";
+import TenantStatement from "./components/Home/TenantStatement";
 
 // Main app component
 function Main(): JSX.Element {
@@ -38,6 +41,9 @@ function Main(): JSX.Element {
         {/* <Route path="/home" element={<Home />} /> */}
         <Route path="/clock" element={<Clock />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/manage_tenants" element={<ManageTenants />}/>
+        <Route path="/rent_payments" element={<RentPayments />} />
+        <Route path="/tenant_statement" element={<TenantStatement />} />
       </Route>
     )
   );
