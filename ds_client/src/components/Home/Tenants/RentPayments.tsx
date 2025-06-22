@@ -33,13 +33,14 @@ export default function RentPayments() {
     date_paid: "",
   });
   const [isEditing, setIsEditing] = useState<number | null>(null);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     fetchTenantsPayments();
   }, []);
 
   const fetchTenantsPayments = () => {
-    fetch("http://127.0.0.1:8000/payments/")
+    fetch(`${API_URL}/payments/`)
       .then((res) => res.json())
       .then((data) => setPayments(data));
   };
@@ -49,7 +50,7 @@ export default function RentPayments() {
   }, []);
 
   const fetchTenants = () => {
-    fetch("http://127.0.0.1:8000/tenants/")
+    fetch(`${API_URL}/tenants/`)
       .then((res) => res.json())
       .then((data) => setTenants(data));
   };
@@ -65,8 +66,8 @@ export default function RentPayments() {
     e.preventDefault();
 
     const url = isEditing
-      ? `http://127.0.0.1:8000/edit_payment/${isEditing}/`
-      : "http://127.0.0.1:8000/add_payment/";
+      ? `${API_URL}/edit_payment/${isEditing}/`
+      : `${API_URL}/add_payment/`;
 
     const method = isEditing ? "PUT" : "POST";
 
@@ -127,7 +128,7 @@ export default function RentPayments() {
       //Proceed to delete the tenant
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/delete_payment/${id}`,
+          `${API_URL}/delete_payment/${id}`,
           {
             method: "DELETE",
           }

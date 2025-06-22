@@ -77,7 +77,7 @@ def tenant_payment_status(request):
             'tenant_name' : tenant.tenant_name,
             'room_number' : tenant.room_number,
             'rent_amount' : str(tenant.rent_amount),
-            'join_date' : tenant.join_date.strftime('%Y-%m-%d'),
+            'join_date' : tenant.join_date.strftime('%d-%m-%Y'),
             },
           'unpaid_months': [],
           'total_unpaid_months': 0,
@@ -155,7 +155,7 @@ def view_tenants_full_details(request):
         'tenant_name': tenant.tenant_name,
         'room_number': tenant.room_number,
         'rent_amount': format(tenant.rent_amount, ',.2f'),
-        'join_date': tenant.join_date.strftime('%Y-%m-%d'),
+        'join_date': tenant.join_date.strftime('%d-%m-%Y'),
         'total_overdue_months': total_overdue_months,
         'total_overdue_amount': format(total_overdue_amount, ',.2f'),
       })
@@ -193,7 +193,7 @@ def add_tenant(request):
         tenant_name=data['tenant_name'],
         room_number=data['room_number'],
         rent_amount=data['rent_amount'],
-        join_date=datetime.strptime(data['join_date'], "%Y-%m-%d").date(),
+        join_date=datetime.strptime(data['join_date'], "%d-%m-%Y").date(),
       )
       
       return JsonResponse({"message": "Tenant added successfully.",
@@ -202,7 +202,7 @@ def add_tenant(request):
                     "tenant_name": tenant.tenant_name,
                     "room_number": tenant.room_number,
                     "rent_amount": tenant.rent_amount,
-                    "join_date": tenant.join_date.strftime('%Y-%m-%d'),
+                    "join_date": tenant.join_date.strftime('%d-%m-%Y'),
                   }
                   }, status=201)
       
@@ -226,7 +226,7 @@ def edit_tenant(request, id):
         if 'rent_amount' in data:
             tenant.rent_amount = data['rent_amount']
         if 'join_date' in data:
-            tenant.join_date = datetime.strptime(data['join_date'], "%Y-%m-%d").date()
+            tenant.join_date = datetime.strptime(data['join_date'], "%d-%m-%Y").date()
         tenant.save()
 
         # Update rent payments if provided
@@ -251,7 +251,7 @@ def edit_tenant(request, id):
                     defaults={
                         'amount_due': amount_due,
                         'amount_paid': amount_paid,
-                        'date_paid': datetime.strptime(date_paid, '%Y-%m-%d').date() if date_paid else None
+                        'date_paid': datetime.strptime(date_paid, '%d-%m-%Y').date() if date_paid else None
                     }
                 )
 
@@ -259,7 +259,7 @@ def edit_tenant(request, id):
                     rent_payment.amount_due = amount_due
                     rent_payment.amount_paid = amount_paid
                     rent_payment.date_paid = (
-                        datetime.strptime(date_paid, '%Y-%m-%d').date() if date_paid else None
+                        datetime.strptime(date_paid, '%d-%m-%Y').date() if date_paid else None
                     )
                     rent_payment.save()
 
@@ -268,7 +268,7 @@ def edit_tenant(request, id):
                     "month": rent_payment.month,
                     "amount_due": float(rent_payment.amount_due),
                     "amount_paid": float(rent_payment.amount_paid),
-                    "date_paid": rent_payment.date_paid.strftime('%Y-%m-%d') if rent_payment.date_paid else None
+                    "date_paid": rent_payment.date_paid.strftime('%d-%m-%Y') if rent_payment.date_paid else None
                 })
 
         return JsonResponse({
@@ -278,7 +278,7 @@ def edit_tenant(request, id):
                 "tenant_name": tenant.tenant_name,
                 "room_number": tenant.room_number,
                 "rent_amount": float(tenant.rent_amount),
-                "join_date": tenant.join_date.strftime('%Y-%m-%d')
+                "join_date": tenant.join_date.strftime('%d-%m-%Y')
             },
             "updated_rent_payments": updated_payments
         }, status=200)
@@ -349,7 +349,7 @@ def view_rent_payments(request):
             "month": calendar.month_name[payment.month][:3], 
             "amount_due": payment.amount_due,
             "amount_paid": payment.amount_paid,
-            "date_paid": payment.date_paid,
+            "date_paid": payment.date_paid.strftime('%d-%m-%Y'),
         })
 
     return JsonResponse(result, safe=False)
@@ -392,7 +392,7 @@ def edit_payment(request, id):
       if "amount_paid" in data:
         rent_payment.amount_paid=float(data['amount_paid'])
       if "date_paid" in data:
-        rent_payment.date_paid=datetime.strptime(data['date_paid'], '%Y-%m-%d').date()
+        rent_payment.date_paid=datetime.strptime(data['date_paid'], '%d-%m-%Y').date()
         
       rent_payment.save()
       
@@ -449,7 +449,7 @@ def tenant_statement(request, id):
       if isinstance(payment_obj, RentPayment):
           due = float(payment_obj.amount_due)
           paid = float(payment_obj.amount_paid)
-          date_paid = payment_obj.date_paid.strftime('%Y-%m-%d') if payment_obj.date_paid else None
+          date_paid = payment_obj.date_paid.strftime('%d-%m-%Y') if payment_obj.date_paid else None
       else:
           due = float(tenant.rent_amount)
           paid = 0.0

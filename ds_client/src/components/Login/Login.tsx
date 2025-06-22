@@ -22,9 +22,11 @@ const AdminLoginForm = () => {
   const navigate = useNavigate();
   // const {onLogin} = useOutletContext();
   const { onLogin, user } = useOutletContext<OutletContextType>();
+  const API_URL = import.meta.env.VITE_API_URL;
+
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/users/")
+    fetch(`${API_URL}/users/`)
       .then((res) => res.json())
       .then((users) => {
         setUsers(users);
@@ -35,7 +37,7 @@ const AdminLoginForm = () => {
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    fetch("http://127.0.0.1:8000/login/", {
+    fetch(`${API_URL}/login/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

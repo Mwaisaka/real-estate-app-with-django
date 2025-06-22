@@ -27,13 +27,14 @@ export default function ManageTenants() {
   const [searchCategory, setSearchCategory] = useState<string>("tenant_name");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const tenantsPerPage = 15;
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     fetchTenants();
   }, []);
 
   const fetchTenants = () => {
-    fetch("http://127.0.0.1:8000/tenants_all_details/")
+    fetch(`${API_URL}/tenants_all_details/`)
       .then((res) => res.json())
       .then((data) => setTenants(data));
   };
@@ -62,8 +63,8 @@ export default function ManageTenants() {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const url = isEditing
-      ? `http://127.0.0.1:8000/edit_tenant/${isEditing}/`
-      : "http://127.0.0.1:8000/add_tenant/";
+      ? `${API_URL}/edit_tenant/${isEditing}/`
+      : `${API_URL}/add_tenant/`;
 
     const method = isEditing ? "PUT" : "POST";
 
@@ -106,7 +107,7 @@ export default function ManageTenants() {
       //Proceed to delete the tenant
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/delete_tenant/${id}`,
+          `${API_URL}/delete_tenant/${id}`,
           {
             method: "DELETE",
           }
@@ -127,10 +128,6 @@ export default function ManageTenants() {
       alert("Tenant not deleted!");
       return;
     }
-
-    // fetch(`http://127.0.0.1:8000/delete_tenant/${id}`, {
-    //   method: "DELETE",
-    // }).then(() => fetchTenants());
   };
 
   const handleAddNew = () => {

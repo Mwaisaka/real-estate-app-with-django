@@ -39,19 +39,20 @@ interface TenantStatement {
 export default function TenantStatement() {
   const [tenants, setTenants] = useState<Tenant[]>([]);
   const [statement, setStatement] = useState<TenantStatement | null>(null);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     fetchTenants();
   }, []);
 
   const fetchTenants = () => {
-    fetch("http://127.0.0.1:8000/tenants_all_details/")
+    fetch(`${API_URL}/tenants_all_details/`)
       .then((res) => res.json())
       .then((data) => setTenants(data));
   };
 
   const fetchTenantStatement = (tenantId: number) => {
-    fetch(`http://127.0.0.1:8000/tenant/${tenantId}/tenant_statement/`)
+    fetch(`${API_URL}/tenant/${tenantId}/tenant_statement/`)
       .then((res) => res.json())
       .then((data) => setStatement(data))
       .catch((err) => console.error("Statement fetch error:", err));

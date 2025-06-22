@@ -18,9 +18,10 @@ function TenantsList() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const tenantsPerPage = 15;
     const [confirmDeleteIds, setConfirmDeleteIds] = useState<number[]>([]);
+    const API_URL = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/tenants_all_details")
+        fetch(`${API_URL}/tenants_all_details`)
             .then((r) => r.json())
             .then(setTenants);
             console.log("Tenants: "+tenants)
@@ -50,7 +51,7 @@ function TenantsList() {
 
     const confirmDelete = async (tenantId: number) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/admin/${tenantId}`, {
+            const response = await fetch(`${API_URL}/admin/${tenantId}`, {
                 method: "DELETE",
             });
             if (response.ok) {
