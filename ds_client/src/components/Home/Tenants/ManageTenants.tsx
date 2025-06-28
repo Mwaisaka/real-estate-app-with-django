@@ -62,6 +62,14 @@ export default function ManageTenants() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+
+    const formattedTenant = {
+      ...formTenant,
+      join_date: new Date(formTenant.join_date)
+        .toLocaleDateString("en-GB")
+        .split("/")
+        .join("-"),
+    };
     const url = isEditing
       ? `${API_URL}/edit_tenant/${isEditing}/`
       : `${API_URL}/add_tenant/`;
@@ -73,7 +81,7 @@ export default function ManageTenants() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(formTenant),
+      body: JSON.stringify(formattedTenant),
     })
       .then((res) => res.json())
       .then(() => {
@@ -106,12 +114,9 @@ export default function ManageTenants() {
     if (confirmDeleteTenant) {
       //Proceed to delete the tenant
       try {
-        const response = await fetch(
-          `${API_URL}/delete_tenant/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
+        const response = await fetch(`${API_URL}/delete_tenant/${id}`, {
+          method: "DELETE",
+        });
         if (!response.ok) {
           alert("Tenant not deleted!");
           throw new Error(`Failed to delete tenant: ${response.statusText}`);
@@ -158,7 +163,8 @@ export default function ManageTenants() {
       <div className="font-bold text-2xl text-center mb-2 underline">
         <h1>Tenants' List</h1>
       </div>
-      <div className="bg-gray-300"
+      <div
+        className="bg-gray-300"
         style={{
           display: "flex",
           justifyContent: "space-between",
