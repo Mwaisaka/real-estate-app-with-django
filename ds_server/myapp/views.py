@@ -293,12 +293,14 @@ def edit_tenant(request, id):
 def add_payment(request):
    if request.method == "POST":
      try:
-       tenant_id=request.data.get('tenant')
-       year=int(request.data.get('year'))
-       month=int(request.data.get('month'))
-       amount_due=float(request.data.get('amount_due'))
-       amount_paid=float(request.data.get('amount_paid'))
-       date_paid=request.data.get('date_paid')
+       data = json.loads(request.body)
+       
+       tenant_id=data.get('tenant')
+       year=int(data.get('year'))
+       month=int(data.get('month'))
+      #  amount_due=float(data.get('amount_due'))
+       amount_paid=float(data.get('amount_paid'))
+       date_paid=data.get('date_paid')
        
        #Validate tenant exists
        try:
@@ -312,6 +314,8 @@ def add_payment(request):
                   status=400)
          
         # Create the rent payment manually
+      
+       amount_due = tenant.rent_amount
        rent_payment = RentPayment.objects.create(
               tenant=tenant,
               year=year,
