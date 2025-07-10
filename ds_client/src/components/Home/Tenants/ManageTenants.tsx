@@ -65,10 +65,7 @@ export default function ManageTenants() {
 
     const formattedTenant = {
       ...formTenant,
-      join_date: new Date(formTenant.join_date)
-        .toLocaleDateString("en-GB")
-        .split("/")
-        .join("-"),
+      join_date: new Date(formTenant.join_date).toISOString().split("T")[0],
     };
     const url = isEditing
       ? `${API_URL}/edit_tenant/${isEditing}/`
@@ -100,7 +97,28 @@ export default function ManageTenants() {
   };
 
   const handleEdit = (tenant: Tenant) => {
-    setFormTenant(tenant);
+    // setFormTenant(tenant);
+
+    let formattedJoinDate = tenant.join_date;
+
+    // Convert to YYYY-MM-DD only if it's not already in that format
+    if (/\d{2}[-/]\d{2}[-/]\d{4}/.test(tenant.join_date)) {
+      const [day, month, year] = tenant.join_date.split(/[-/]/);
+      formattedJoinDate = `${year}-${month.padStart(2, "0")}-${day.padStart(
+        2,
+        "0"
+      )}`;
+    }
+
+    setFormTenant({
+      ...tenant,
+      join_date: formattedJoinDate,
+      rent_amount: Number(
+        typeof tenant.rent_amount === "string"
+          ? tenant.rent_amount.replace(/,/g, "")
+          : tenant.rent_amount
+      ),
+    });
     setIsEditing(tenant.id ?? null);
     setShowForm(true); // show form when editing
   };
@@ -260,7 +278,7 @@ export default function ManageTenants() {
                   id={id}
                   name={id}
                   placeholder={label}
-                  value={(formTenant as any)[id]}
+                  value={(formTenant as any)[id] ?? ""}
                   onChange={handleChange}
                   required={[
                     "tenant_name",

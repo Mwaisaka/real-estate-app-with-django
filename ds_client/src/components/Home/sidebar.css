@@ -1,17 +1,17 @@
 .menu{
     display: flex;
     flex-direction: column;
-    gap: 2.3rem;
+    gap: 1.0rem;
     height: 94vh;
 }
 .logo {
 
     text-align: center;
-    padding: 20px;
+    padding: 0px;
     color: #27374d;
     align-items: center;
     display:flex;
-    gap: 20px;
+    gap: 0px;
 
 }
 
@@ -28,11 +28,11 @@
 .menu--list .item{
     display: flex;
     align-items: center;
-    gap: 20px;
-    font-size:1.1rem ;
+    gap: 10px;
+    font-size:1.0rem ;
     text-decoration: none;
     font-weight: 600;
-    padding: 10px;
+    padding: 5px;
     border-radius: 10px;
     transition: 0.3s ease-in-out;
     color: #27374d;

@@ -51,10 +51,10 @@ const Sidebar = ({ onLogout, onMenuItemClick }) => {
 
   return (
     <div className="menu mt-5">
-      {/* <div className="logo">
+      <div className="logo">
         <BiBookAlt className="logo-icon" />
-        <h2>Dashboard Overview</h2>
-      </div> */}
+        <h2 className="text size-25 underline">Dashboard Menu</h2>
+      </div>
       <div className="menu--list">
         {/* <a href="#" className="item active">
           <BiHome className="icon" />
@@ -65,7 +65,7 @@ const Sidebar = ({ onLogout, onMenuItemClick }) => {
           onClick={() => handleClick("Dashboard")}
         >
           <BiHome className="icon" />
-          <span>Dashboard Home</span>
+          <span> Home</span>
         </div>
 
         {/* <div

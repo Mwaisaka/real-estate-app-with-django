@@ -81,10 +81,19 @@ export default function TenantStatement() {
           .no-print {
             display: none !important;
           }
+
+          .app-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+          }
         }
       `}
       </style>
+
       <div style={{ marginTop: "50px" }}>
+        
         <div className="font-bold text-xl text-center mb-2 underline">
           <h1>Summary of Tenants' Rent Payments</h1>
         </div>
@@ -190,6 +199,7 @@ export default function TenantStatement() {
               backgroundColor: "white",
             }}
           >
+            <h1 className="app-title">My Property Manager</h1>
             <h3 className="font-bold text-center text-xl mb-5 underline decoration-dashed">
               Tenant Rent Payment Statement
             </h3>

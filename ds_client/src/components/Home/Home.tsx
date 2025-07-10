@@ -67,7 +67,7 @@ const Home = () => {
         )}
 
         {/* Main Dashboard Layout */}
-        <div className="dashboard">
+        <div className="dashboard ">
           {/* Sidebar (Visible unless toggled off on mobile) */}
           <div
             className={`sidebar ${
