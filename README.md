@@ -30,7 +30,7 @@ Real Estate App is a house rental application designed to streamline the tenant 
 
 ## Screenshots
 
-![Landing Page](/public/Login.PNG)
+![Landing Page](./ds_client/public/Login.PNG)
 
 
 ## Installation
