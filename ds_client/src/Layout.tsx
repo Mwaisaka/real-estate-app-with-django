@@ -3,7 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header/Header.tsx";
 import Footer from "./components/Footer/Footer.tsx";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop.tsx";
-// import Quotes from "./components/Quotes/Quotes.jsx";
+import Quotes from "./components/Quotes/Quotes.tsx";
 
 function Layout({ user, onLogin, onLogout }) {
   const location = useLocation();
@@ -14,6 +14,7 @@ function Layout({ user, onLogin, onLogout }) {
 
       {/* <Header /> */}
       {!hideHeaderFooter && <Header />}
+       {!hideHeaderFooter && <Quotes />}
       {/* <Quotes /> */}
 
       <main className="flex-grow w-full px-4 py-4">

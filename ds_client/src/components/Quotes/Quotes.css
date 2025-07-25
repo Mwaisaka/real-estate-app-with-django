@@ -1,0 +1,30 @@
+.quote-container {
+  width: 100%; /* Full width */
+  overflow: hidden; /* Hide overflowing content */
+  white-space: nowrap; /* Prevent wrapping */
+  position: relative;
+  height: 50px; /* Adjust height as needed */
+  display: flex;
+  align-items: center;
+  margin-bottom: -30px;
+  margin-top: 2px;
+  margin-left: 20px;
+}
+
+.scrolling-quote {
+  display: inline-block;
+  white-space: nowrap; /* Ensure the text does not wrap */
+  animation: scroll-left 30s linear infinite; /* Scroll animation */
+  font-size: 1em; /* Adjust font size */
+  color: #141414; /* Text color */
+  font-style: italic;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(350%); /* Start outside the right boundary */
+  }
+  100% {
+    transform: translateX(-100%); /* End outside the left boundary */
+  }
+}
