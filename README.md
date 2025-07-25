@@ -1,45 +1,37 @@
 # Real Estate App
 
-Real Estate App is a house rental application designed to streamline the tenant management and rent collection process and provide a seamless experience for users.
+Real Estate App is a house rental application designed to streamline the tenant management and rent collection process and provide a seamless experience for house owners/managers.
 
 ## Features
 
-- **Booking System**: Easily book houses for rent.
-- **Admin Panel**: Manage properties and bookings efficiently.
-- **Map Integration**: View property locations on a map for better understanding.
-- **Custom House Pages**: Each house has its own page with detailed information.
-- **Sample Payment Integration**: Seamless payment process for booking confirmation.
-- **Authentication**: Firebase authentication ensures secure access to the platform.
+- **View All Tenants**: Easily view list of all Tenants.
+- **Add/Remove Tenants**: Manage Tenants Records.
+- **Add/Update/Remove Tenants Rent Payment Records**: Manage Tenants Rent Payment Records.
+- **View Tenants Rent Payment Statement**: View Tenants Rent Payment Statement.
+- **Download Tenants Rent Payment Statement**: Download Tenants Rent Payment Statement.
 
 ## Tech Stack
 
 - **Frontend**: React with Vite for a fast development experience.
-- **State Management**: Redux for managing application state.
+- **State Management**: React UseState for managing application state.
 - **Routing**: React Router for navigation between pages.
-- **Backend**: Firebase used for authentication and backend services.
-- **Data Fetching**: React Query for efficient data fetching and caching.
+- **Backend**: Python for backend services.
+- **Data Fetching**: React Fetch for efficient data fetching and caching.
 - **Styling**: Tailwind CSS for styling components.
 
 ## Routes
 
-- **Main Page**: `/` - Landing page for the application.
-- **All Houses**: `/all-houses` - View all available houses for rent.
-- **House Details**: `/house/:id` - Detailed view of a specific house.
-  - **Overview**: `/house/:id/overview` - Overview of the property.
-  - **Location**: `/house/:id/location` - Location details of the property.
-- **Payment**: `/payment` - Payment integration for booking confirmation.
 - **Login**: `/login` - User login page.
-- **Sign Up**: `/sign-up` - User sign-up page.
-- **Admin Dashboard**: `/admin/dashboard` - Dashboard for managing properties.
-  - **House List**: `/admin/dashboard` - List of houses available for management.
-  - **New House**: `/admin/dashboard/new-house` - Form for adding a new house.
+- **Admin Dashboard**: `dashboard` - Dashboard for managing tenant records.
+  - **Manage Tenants**: `/dashboard/manageTenants` - Manage Tenants Records.
+  - **Manage Rent Payments**: `/dashboard/manageRentPayments` - Manage Tenants Rent Payments Records.
+  - **Reports**: `/dashboard/reports` - View and Download Tenants Rent Statements.
 - **Not Found**: `*` - Page displayed when a route is not found.
 
 ## Screenshots
 
-![House Example 1](/public/sample-3.png)
-![House Example 2](/public/sample-2.png)
-![House Example 3](/public/sample-1.png)
+![Landing Page](/public/Login.PNG)
+
 
 ## Installation
 
@@ -55,15 +47,13 @@ To get started with House GRW, follow these steps:
 2. Navigate to the project directory:
 
    ```bash
-   cd house-rental-app
+   cd ds_client
    ```
 
-3. Install dependencies using npm or yarn:
+3. Install dependencies using npm:
 
    ```bash
    npm install
-   # or
-   yarn install
    ```
 
 ## Usage
@@ -72,8 +62,6 @@ Once you have installed the dependencies, you can run the project locally:
 
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
 This will start the development server. You can now access the application by navigating to `http://localhost:3000` in your web browser.
