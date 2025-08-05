@@ -13,8 +13,8 @@ function Layout({ user, onLogin, onLogout }) {
       <ScrollToTop />
 
       {/* <Header /> */}
-      {!hideHeaderFooter && <Header />}
-       {!hideHeaderFooter && <Quotes />}
+      {/* {!hideHeaderFooter && <Header />} */}
+       {/* {!hideHeaderFooter && <Quotes />} */}
       {/* <Quotes /> */}
 
       <main className="flex-grow w-full px-4 py-4">
@@ -24,7 +24,7 @@ function Layout({ user, onLogin, onLogout }) {
       </main>
 
       {/* <Footer /> */}
-      {!hideHeaderFooter && <Footer />}
+      {/* {!hideHeaderFooter && <Footer />} */}
     </div>
   );
 }

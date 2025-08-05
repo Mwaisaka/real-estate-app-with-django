@@ -1,7 +1,7 @@
 import React from "react";
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50 flex items-start justify-center px-4 ">
+    <div className="min-h-screen bg-gray-50 flex items-start justify-center px-4 mt-5 shadow-none rounded-2xl">
       <div className="bg-white shadow-md rounded-2xl p-8 max-w-2xl w-full mt-10">
         <h1 className="text-3xl font-bold text-center text-blue-600 mb-6 underline">
           Welcome to My Real Estate App!
