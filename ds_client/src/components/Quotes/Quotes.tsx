@@ -90,7 +90,6 @@ function Quotes() {
       setDuration(10);
     }
   }
-
   useEffect(() => {
     fetchQuote();
     const interval = setInterval(fetchQuote, 15000); // fetch a new quote every 15s
